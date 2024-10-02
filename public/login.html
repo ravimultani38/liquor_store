@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Liquor Store</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Login</h1>
+        <form action="/auth/login" method="POST">
+            <div class="input-field">
+                <input type="text" id="username" name="username" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+            </div>
+            <button type="submit" class="btn waves-effect waves-light">Login</button>
+            <a href = "/" class = "btn waves-effect waves-light""> Cancel </a>
+            <div>
+                <p id="error-message" class="red-text"></p>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error') && urlParams.get('error') === 'invalid') {
+            document.getElementById('error-message').textContent = 'Invalid username or password.';
+        }
+    </script>
+</body>
+</html>

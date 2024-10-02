@@ -1,0 +1,99 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+}
+
+nav {
+  margin-bottom: 20px;
+}
+
+.container {
+  padding-top: 20px;
+}
+
+.product-card {
+  margin: 15px 0;
+  position: relative; /* Ensures the button and done message are positioned correctly within the card */
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden; /* This prevents the done message from overflowing */
+}
+
+.product-card .card-image img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.addtocart {
+  display: block;
+  padding: 0.5em 1em;
+  border-radius: 100px;
+  border: none;
+  font-size: 1em; /* Adjusted size for better fit */
+  position: relative;
+  background: #0652DD;
+  cursor: pointer;
+  height: 2em;
+  width: 20em;
+  overflow: hidden;
+  transition: transform 0.1s;
+  z-index: 1;
+  margin-top: 10px; /* Added margin for spacing */
+}
+
+.addtocart:hover {
+  transform: scale(1.1);
+}
+
+.done {
+  background: #be2edd;
+  position: absolute;
+  width: 100%;
+  height: 100%; /* Ensures it covers the entire button */
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease;
+  transform: translateX(-110%) skew(-40deg); /* Adjusted to only affect the button */
+  z-index: 0; /* Make sure it's behind the button */
+}
+
+.pretext {
+  color: #fff;
+  background: #0652DD;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Quicksand', sans-serif;
+  z-index: 2; /* Ensure the pretext is on top */
+}
+
+.product-card .card-content {
+  padding: 15px;
+}
+
+.product-card .card-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.posttext {
+  background: #be2edd;
+  text-align: center;
+  padding: 0.5em 0;
+  color: white;
+}
+
+.product-card .addtocart-container {
+  position: relative;
+  overflow: hidden;
+  margin-top: 15px; /* Give space from the content */
+}
+.posttext{
+  background:#be2edd;
+}

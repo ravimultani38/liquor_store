@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Liquor Store</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="index.html" class="brand-logo">Liquor Store</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#products">Products</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a id="logout-button" href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Admin Page</h1>
+
+        <h2>Add New Product</h2>
+        <form id="add-product-form">
+            <div class="input-field">
+                <input type="text" id="name" name="name" required>
+                <label for="name">Product Name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="description" name="description" required>
+                <label for="description">Product Description</label>
+            </div>
+            <div class="input-field">
+                <input type="number" step="0.01" id="price" name="price" required>
+                <label for="price">Product Price</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="image" name="image" required>
+                <label for="image">Product Image URL</label>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit">Add Product</button>
+        </form>
+
+        <h2>Update Product Price</h2>
+        <form id="update-product-form">
+            <div class="input-field">
+                <select id="product-dropdown" name="id" required>
+                    <option value="" disabled selected>Select a product</option>
+                    <!-- Options will be dynamically added here -->
+                </select>
+                <label for="product-dropdown">Product</label>
+            </div>
+            <div class="input-field">
+                <input type="number" step="0.01" id="update-price" name="price" required>
+                <label for="update-price">New Price</label>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit">Update Price</button>
+        </form>
+    </div>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.FormSelect.init(document.querySelectorAll('select'));
+
+            document.getElementById('logout-button').addEventListener('click', function() {
+                fetch('/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.href = '/login.html';
+                    }
+                });
+            });
+
+            document.getElementById('add-product-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const productData = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        price: parseFloat(formData.get('price')),
+        image: formData.get('image')
+    };
+
+    fetch('/api/products', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productData)
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.text().then(text => {
+                throw new Error(text);
+            });
+        }
+    }).then(product => {
+        console.log('Product added:', product);
+        event.target.reset();
+        loadProducts();
+    }).catch(error => {
+        console.error('Error adding product:', error);
+    });
+});
+
+            document.getElementById('update-product-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const productId = formData.get('id');
+                const newPrice = parseFloat(formData.get('price'));
+
+                fetch(`/api/products/${productId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ price: newPrice })
+                }).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                }).then(product => {
+                    console.log('Product price updated:', product);
+                    event.target.reset();
+                    loadProducts();
+                }).catch(error => {
+                    console.error('Error updating product price:', error);
+                });
+            });
+
+            function loadProducts() {
+                fetch('/api/products')
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            return response.text().then(text => {
+                                throw new Error(text);
+                            });
+                        }
+                    })
+                    .then(products => {
+                        const dropdown = document.getElementById('product-dropdown');
+                        dropdown.innerHTML = '<option value="" disabled selected>Select a product</option>';
+                        products.forEach(product => {
+                            const option = document.createElement('option');
+                            option.value = product._id; // Ensure using _id for MongoDB documents
+                            option.textContent = `${product.name} - $${product.price.toFixed(2)}`;
+                            dropdown.appendChild(option);
+                        });
+                        M.FormSelect.init(dropdown);
+                    })
+                    .catch(error => {
+                        console.error('Error loading products:', error);
+                    });
+            }
+
+            loadProducts();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Whiskey",
+    "description": "Aged whiskey with a rich flavor.",
+    "price": 29.99,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "name": "Vodka",
+    "description": "Smooth and clear vodka.",
+    "price": 19.99,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "name": "Rum",
+    "description": "Dark rum with a hint of vanilla.",
+    "price": 24.99,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "name": "Johnie",
+    "description": "johnie walker",
+    "price": 49.99,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "name": "Royal Stag",
+    "description": "Indian based Alcohol",
+    "price": 19.99,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": "1722727793972",
+    "name": "JAck Daniel",
+    "price": 75,
+    "image": "https://via.placeholder.com/150",
+    "description": "American brand"
+  },
+  {
+    "id": 7,
+    "name": "New",
+    "description": "NEw",
+    "price": 60,
+    "image": "https://via.placeholder.com/150"
+  }
+]
